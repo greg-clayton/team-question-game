@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: team-question-game
+    runtime: static
+    staticPublishPath: .
+    buildCommand: ""
+    pullRequestPreviewsEnabled: false
