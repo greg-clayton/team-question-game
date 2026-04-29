@@ -41,17 +41,17 @@
     /* Name Cards Grid */
     .names-grid {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
       margin-bottom: 40px;
-      max-width: 600px;
+      max-width: 100%;
     }
 
     .name-card {
-      padding: 14px 22px;
+      padding: 12px 18px;
       border-radius: 16px;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 700;
       border: 3px solid transparent;
       transition: transform 0.15s, box-shadow 0.15s;
@@ -249,7 +249,7 @@
 </head>
 <body>
 
-  <h1>🎉 Who's Up?</h1>
+  <h1>🎉 Ask Me Anything</h1>
   <p class="subtitle">Press the button to pick someone &amp; ask them a question!</p>
 
   <div class="names-grid" id="namesGrid"></div>
