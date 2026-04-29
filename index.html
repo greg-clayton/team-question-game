@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Get To Know You!</title>
+  <title>Ask Me Anything</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -38,14 +38,14 @@
       text-align: center;
     }
 
-    /* Name Cards Grid */
+    /* Name Cards */
     .names-grid {
       display: flex;
-      flex-wrap: nowrap;
+      flex-wrap: wrap;
       justify-content: center;
       gap: 10px;
-      margin-bottom: 40px;
       max-width: 100%;
+      margin-bottom: 12px;
     }
 
     .name-card {
@@ -59,7 +59,10 @@
       background: rgba(255,255,255,0.06);
       color: #cbd5e1;
       position: relative;
-      overflow: hidden;
+      overflow: visible;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .name-card::before {
@@ -69,17 +72,8 @@
       opacity: 0;
       transition: opacity 0.15s;
       border-radius: 13px;
-    }
-
-    .name-card[data-name="Leah"]   { --c1: #f093fb; --c2: #f5576c; }
-    .name-card[data-name="Justin"] { --c1: #4facfe; --c2: #00f2fe; }
-    .name-card[data-name="Chris"]  { --c1: #43e97b; --c2: #38f9d7; }
-    .name-card[data-name="Greg"]   { --c1: #fda085; --c2: #f6d365; }
-    .name-card[data-name="Darsh"]  { --c1: #a18cd1; --c2: #fbc2eb; }
-    .name-card[data-name="Kunal"]  { --c1: #30cfd0; --c2: #667eea; }
-
-    .name-card::before {
       background: linear-gradient(135deg, var(--c1), var(--c2));
+      pointer-events: none;
     }
 
     .name-card.active {
@@ -88,7 +82,6 @@
       transform: scale(1.12);
       box-shadow: 0 0 30px color-mix(in srgb, var(--c1) 60%, transparent);
     }
-
     .name-card.active::before { opacity: 0.18; }
 
     .name-card.winner {
@@ -98,7 +91,6 @@
       box-shadow: 0 0 50px color-mix(in srgb, var(--c1) 80%, transparent);
       animation: pulse-winner 0.8s ease-in-out infinite alternate;
     }
-
     .name-card.winner::before { opacity: 0.25; }
 
     @keyframes pulse-winner {
@@ -107,6 +99,86 @@
     }
 
     .name-text { position: relative; z-index: 1; }
+
+    /* Remove button on cards */
+    .remove-btn {
+      display: none;
+      position: relative;
+      z-index: 2;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: #fff;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 0.75rem;
+      line-height: 1;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s;
+      padding: 0;
+    }
+    .remove-btn:hover { background: rgba(245, 87, 108, 0.7); }
+
+    .names-grid.editing .remove-btn { display: flex; align-items: center; justify-content: center; }
+
+    /* Edit bar */
+    .edit-bar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .edit-toggle-btn {
+      background: none;
+      border: none;
+      color: #475569;
+      font-size: 0.82rem;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+      letter-spacing: 0.5px;
+    }
+    .edit-toggle-btn:hover { color: #94a3b8; background: rgba(255,255,255,0.05); }
+    .edit-toggle-btn.active { color: #f5576c; }
+
+    .add-name-row {
+      display: none;
+      gap: 8px;
+      align-items: center;
+    }
+    .add-name-row.visible { display: flex; }
+
+    .add-name-input {
+      background: rgba(255,255,255,0.08);
+      border: 2px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 10px 16px;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      outline: none;
+      width: 160px;
+      transition: border-color 0.15s;
+    }
+    .add-name-input::placeholder { color: #475569; }
+    .add-name-input:focus { border-color: rgba(255,255,255,0.35); }
+
+    .add-btn {
+      background: linear-gradient(135deg, #43e97b, #38f9d7);
+      border: none;
+      border-radius: 12px;
+      padding: 10px 18px;
+      color: #0f172a;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: filter 0.15s, transform 0.15s;
+    }
+    .add-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
     /* Spin Button */
     .spin-btn {
@@ -123,25 +195,15 @@
       transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
       margin-bottom: 40px;
     }
-
     .spin-btn:hover:not(:disabled) {
       transform: translateY(-3px) scale(1.04);
       box-shadow: 0 14px 40px rgba(245, 87, 108, 0.65);
     }
-
     .spin-btn:active:not(:disabled) { transform: translateY(0) scale(0.98); }
-
-    .spin-btn:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-    }
+    .spin-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
     /* Question Card */
-    .question-section {
-      width: 100%;
-      max-width: 560px;
-      perspective: 1000px;
-    }
+    .question-section { width: 100%; max-width: 560px; }
 
     .question-card {
       background: rgba(255,255,255,0.07);
@@ -154,7 +216,6 @@
       animation: card-drop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
       display: none;
     }
-
     .question-card.visible { display: block; }
 
     @keyframes card-drop {
@@ -185,46 +246,9 @@
       font-weight: 600;
       color: #e2e8f0;
       line-height: 1.4;
-      margin-bottom: 28px;
     }
 
-    .card-actions {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .action-btn {
-      border: 2px solid rgba(255,255,255,0.2);
-      border-radius: 50px;
-      padding: 10px 26px;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.15s;
-      background: transparent;
-      color: #fff;
-    }
-
-    .action-btn:hover {
-      background: rgba(255,255,255,0.12);
-      border-color: rgba(255,255,255,0.4);
-      transform: translateY(-1px);
-    }
-
-    .action-btn.primary {
-      background: linear-gradient(135deg, #4facfe, #00f2fe);
-      border-color: transparent;
-      color: #0f172a;
-    }
-
-    .action-btn.primary:hover {
-      filter: brightness(1.1);
-      background: linear-gradient(135deg, #4facfe, #00f2fe);
-    }
-
-    /* Confetti burst on winner */
+    /* Confetti */
     .confetti-container {
       position: fixed;
       inset: 0;
@@ -235,8 +259,6 @@
 
     .confetti-piece {
       position: absolute;
-      width: 10px;
-      height: 10px;
       border-radius: 2px;
       animation: confetti-fall linear forwards;
     }
@@ -254,6 +276,14 @@
 
   <div class="names-grid" id="namesGrid"></div>
 
+  <div class="edit-bar">
+    <button class="edit-toggle-btn" id="editToggleBtn" onclick="toggleEdit()">✏️ Edit Names</button>
+    <div class="add-name-row" id="addNameRow">
+      <input class="add-name-input" id="newNameInput" type="text" placeholder="Enter a name..." maxlength="20" />
+      <button class="add-btn" onclick="addName()">+ Add</button>
+    </div>
+  </div>
+
   <button class="spin-btn" id="spinBtn" onclick="spin()">✨ Pick Someone!</button>
 
   <div class="question-section">
@@ -267,16 +297,20 @@
   <div class="confetti-container" id="confettiContainer"></div>
 
   <script>
-    const NAMES = ['Leah', 'Justin', 'Chris', 'Greg', 'Darsh', 'Kunal'];
+    const DEFAULT_NAMES = ['Leah', 'Justin', 'Chris', 'Greg', 'Darsh', 'Kunal'];
 
-    const COLORS = {
-      Leah:   { c1: '#f093fb', c2: '#f5576c' },
-      Justin: { c1: '#4facfe', c2: '#00f2fe' },
-      Chris:  { c1: '#43e97b', c2: '#38f9d7' },
-      Greg:   { c1: '#fda085', c2: '#f6d365' },
-      Darsh:  { c1: '#a18cd1', c2: '#fbc2eb' },
-      Kunal:  { c1: '#30cfd0', c2: '#667eea' },
-    };
+    const PALETTE = [
+      { c1: '#f093fb', c2: '#f5576c' },
+      { c1: '#4facfe', c2: '#00f2fe' },
+      { c1: '#43e97b', c2: '#38f9d7' },
+      { c1: '#fda085', c2: '#f6d365' },
+      { c1: '#a18cd1', c2: '#fbc2eb' },
+      { c1: '#30cfd0', c2: '#667eea' },
+      { c1: '#f7971e', c2: '#ffd200' },
+      { c1: '#ee0979', c2: '#ff6a00' },
+      { c1: '#56ab2f', c2: '#a8e063' },
+      { c1: '#8e2de2', c2: '#4a00e0' },
+    ];
 
     const QUESTIONS = [
       "What's a hobby you absolutely love? 🎨",
@@ -311,20 +345,86 @@
       "What's a small thing that genuinely makes you happy? ✨",
     ];
 
+    let names = loadNames();
     let usedQuestions = [];
     let spinning = false;
-    let currentWinner = null;
+    let editMode = false;
 
-    // Build name cards
-    const grid = document.getElementById('namesGrid');
-    NAMES.forEach(name => {
-      const card = document.createElement('div');
-      card.className = 'name-card';
-      card.dataset.name = name;
-      card.id = `card-${name}`;
-      card.innerHTML = `<span class="name-text">${name}</span>`;
-      grid.appendChild(card);
-    });
+    function loadNames() {
+      try {
+        const saved = localStorage.getItem('ama-names');
+        return saved ? JSON.parse(saved) : [...DEFAULT_NAMES];
+      } catch {
+        return [...DEFAULT_NAMES];
+      }
+    }
+
+    function saveNames() {
+      localStorage.setItem('ama-names', JSON.stringify(names));
+    }
+
+    function getColor(index) {
+      return PALETTE[index % PALETTE.length];
+    }
+
+    function buildGrid() {
+      const grid = document.getElementById('namesGrid');
+      grid.innerHTML = '';
+      if (editMode) grid.classList.add('editing');
+      else grid.classList.remove('editing');
+
+      names.forEach((name, i) => {
+        const color = getColor(i);
+        const card = document.createElement('div');
+        card.className = 'name-card';
+        card.dataset.name = name;
+        card.id = `card-${name}`;
+        card.style.setProperty('--c1', color.c1);
+        card.style.setProperty('--c2', color.c2);
+        card.innerHTML = `<span class="name-text">${name}</span><button class="remove-btn" onclick="removeName('${name}')" title="Remove ${name}">✕</button>`;
+        grid.appendChild(card);
+      });
+    }
+
+    function toggleEdit() {
+      editMode = !editMode;
+      const btn = document.getElementById('editToggleBtn');
+      const addRow = document.getElementById('addNameRow');
+      const spinBtn = document.getElementById('spinBtn');
+
+      btn.textContent = editMode ? '✓ Done' : '✏️ Edit Names';
+      btn.classList.toggle('active', editMode);
+      addRow.classList.toggle('visible', editMode);
+      spinBtn.disabled = editMode;
+
+      if (!editMode) {
+        document.getElementById('newNameInput').value = '';
+        document.getElementById('questionCard').classList.remove('visible');
+      }
+
+      buildGrid();
+    }
+
+    function addName() {
+      const input = document.getElementById('newNameInput');
+      const name = input.value.trim();
+      if (!name || names.includes(name)) {
+        input.focus();
+        return;
+      }
+      names.push(name);
+      saveNames();
+      buildGrid();
+      input.value = '';
+      input.focus();
+    }
+
+    function removeName(name) {
+      if (names.length <= 2) return; // keep at least 2
+      names = names.filter(n => n !== name);
+      saveNames();
+      buildGrid();
+    }
 
     function getRandomQuestion() {
       if (usedQuestions.length >= QUESTIONS.length) usedQuestions = [];
@@ -335,37 +435,30 @@
     }
 
     function clearActive() {
-      NAMES.forEach(n => {
+      names.forEach(n => {
         const c = document.getElementById(`card-${n}`);
-        c.classList.remove('active', 'winner');
+        if (c) c.classList.remove('active', 'winner');
       });
     }
 
     function spin() {
-      if (spinning) return;
+      if (spinning || editMode) return;
       spinning = true;
 
-      // Hide question card
-      const qCard = document.getElementById('questionCard');
-      qCard.classList.remove('visible');
+      document.getElementById('questionCard').classList.remove('visible');
 
-      // Pick winner
-      const winner = NAMES[Math.floor(Math.random() * NAMES.length)];
-      currentWinner = winner;
+      const winner = names[Math.floor(Math.random() * names.length)];
       document.getElementById('spinBtn').disabled = true;
 
-      // Spin animation: cycle through names, speed up then slow down
       const totalFrames = 38;
-      let frame = 0;
-      let currentIdx = Math.floor(Math.random() * NAMES.length);
+      let currentIdx = Math.floor(Math.random() * names.length);
 
       const delays = [];
       for (let i = 0; i < totalFrames; i++) {
-        // Ease in then ease out timing
         const t = i / totalFrames;
         const speed = t < 0.5
-          ? 60 - t * 80          // speed up: 60ms → 20ms
-          : 20 + (t - 0.5) * 320; // slow down: 20ms → 180ms
+          ? 60 - t * 80
+          : 20 + (t - 0.5) * 320;
         delays.push(Math.max(18, Math.round(speed)));
       }
 
@@ -374,12 +467,11 @@
         elapsed += delay;
         setTimeout(() => {
           clearActive();
-          // On last frame, land on winner
           if (i === totalFrames - 1) {
             document.getElementById(`card-${winner}`).classList.add('winner');
             setTimeout(() => showQuestion(winner), 600);
           } else {
-            document.getElementById(`card-${NAMES[currentIdx % NAMES.length]}`).classList.add('active');
+            document.getElementById(`card-${names[currentIdx % names.length]}`).classList.add('active');
             currentIdx++;
           }
         }, elapsed);
@@ -387,37 +479,23 @@
     }
 
     function showQuestion(winner) {
-      const colors = COLORS[winner];
+      const winnerIndex = names.indexOf(winner);
+      const color = getColor(winnerIndex);
       const qCard = document.getElementById('questionCard');
       const winnerNameEl = document.getElementById('winnerName');
-      const questionTextEl = document.getElementById('questionText');
 
       winnerNameEl.textContent = winner + '!';
-      winnerNameEl.style.setProperty('--winner-c1', colors.c1);
-      winnerNameEl.style.setProperty('--winner-c2', colors.c2);
-      questionTextEl.textContent = getRandomQuestion();
-
-      qCard.classList.remove('visible');
-      void qCard.offsetWidth; // force reflow for animation replay
-      qCard.classList.add('visible');
-
-      launchConfetti(colors.c1, colors.c2);
-      document.getElementById('spinBtn').disabled = false;
-      spinning = false;
-    }
-
-    function newQuestion() {
-      const qCard = document.getElementById('questionCard');
+      winnerNameEl.style.setProperty('--winner-c1', color.c1);
+      winnerNameEl.style.setProperty('--winner-c2', color.c2);
       document.getElementById('questionText').textContent = getRandomQuestion();
+
       qCard.classList.remove('visible');
       void qCard.offsetWidth;
       qCard.classList.add('visible');
-    }
 
-    function resetGame() {
-      clearActive();
-      document.getElementById('questionCard').classList.remove('visible');
-      currentWinner = null;
+      launchConfetti(color.c1, color.c2);
+      document.getElementById('spinBtn').disabled = false;
+      spinning = false;
     }
 
     function launchConfetti(c1, c2) {
@@ -439,6 +517,13 @@
       }
       setTimeout(() => container.innerHTML = '', 4000);
     }
+
+    // Enter to add name
+    document.getElementById('newNameInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') addName();
+    });
+
+    buildGrid();
   </script>
 </body>
 </html>
