@@ -4,38 +4,40 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ask Me Anything</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: radial-gradient(ellipse at 40% 0%, #1e0a3c 0%, #0e0618 70%);
+      font-family: 'DM Sans', system-ui, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 24px;
-      color: #fff;
+      color: #f0e6ff;
     }
 
     h1 {
-      font-size: 2.8rem;
-      font-weight: 900;
-      letter-spacing: -1px;
+      font-family: 'Fredoka One', cursive;
+      font-size: 3rem;
+      font-weight: 400;
+      letter-spacing: 0.5px;
       margin-bottom: 8px;
-      background: linear-gradient(90deg, #f093fb, #f5576c, #fda085);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #f0e6ff;
       text-align: center;
     }
 
     .subtitle {
-      color: #94a3b8;
+      color: rgba(240,230,255,0.35);
       margin-bottom: 40px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       text-align: center;
+      font-weight: 500;
     }
 
     /* Name Cards */
@@ -49,17 +51,17 @@
     }
 
     .name-card {
-      padding: 12px 18px;
-      border-radius: 16px;
-      font-size: 1rem;
-      font-weight: 700;
-      border: 3px solid transparent;
-      transition: transform 0.15s, box-shadow 0.15s;
+      padding: 11px 18px;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: 1px solid rgba(201,160,245,0.12);
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s, background 0.15s;
       cursor: default;
-      background: rgba(255,255,255,0.06);
-      color: #cbd5e1;
+      background: rgba(255,255,255,0.04);
+      color: rgba(240,230,255,0.75);
       position: relative;
-      overflow: visible;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -71,56 +73,56 @@
       inset: 0;
       opacity: 0;
       transition: opacity 0.15s;
-      border-radius: 13px;
+      border-radius: 9px;
       background: linear-gradient(135deg, var(--c1), var(--c2));
       pointer-events: none;
     }
 
     .name-card.active {
       border-color: var(--c1);
-      color: #fff;
-      transform: scale(1.12);
-      box-shadow: 0 0 30px color-mix(in srgb, var(--c1) 60%, transparent);
+      color: #f0e6ff;
+      transform: scale(1.1);
+      box-shadow: 0 0 20px color-mix(in srgb, var(--c1) 45%, transparent);
     }
-    .name-card.active::before { opacity: 0.18; }
+    .name-card.active::before { opacity: 0.15; }
 
     .name-card.winner {
       border-color: var(--c1);
-      color: #fff;
-      transform: scale(1.18);
-      box-shadow: 0 0 50px color-mix(in srgb, var(--c1) 80%, transparent);
+      color: #f0e6ff;
+      transform: scale(1.15);
+      box-shadow: 0 0 36px color-mix(in srgb, var(--c1) 65%, transparent);
       animation: pulse-winner 0.8s ease-in-out infinite alternate;
     }
-    .name-card.winner::before { opacity: 0.25; }
+    .name-card.winner::before { opacity: 0.22; }
 
     @keyframes pulse-winner {
-      from { transform: scale(1.15); }
-      to   { transform: scale(1.22); }
+      from { transform: scale(1.13); }
+      to   { transform: scale(1.19); }
     }
 
     .name-text { position: relative; z-index: 1; }
 
-    /* Remove button on cards */
+    /* Remove button */
     .remove-btn {
       display: none;
       position: relative;
       z-index: 2;
-      background: rgba(255,255,255,0.15);
-      border: none;
-      color: #fff;
+      background: rgba(235,87,87,0.1);
+      border: 1px solid rgba(235,87,87,0.25);
+      color: #eb5757;
       border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      font-size: 0.75rem;
-      line-height: 1;
+      width: 18px;
+      height: 18px;
+      font-size: 0.7rem;
       cursor: pointer;
       flex-shrink: 0;
       transition: background 0.15s;
       padding: 0;
+      align-items: center;
+      justify-content: center;
     }
-    .remove-btn:hover { background: rgba(245, 87, 108, 0.7); }
-
-    .names-grid.editing .remove-btn { display: flex; align-items: center; justify-content: center; }
+    .remove-btn:hover { background: rgba(235,87,87,0.25); }
+    .names-grid.editing .remove-btn { display: flex; }
 
     /* Edit bar */
     .edit-bar {
@@ -134,16 +136,18 @@
     .edit-toggle-btn {
       background: none;
       border: none;
-      color: #475569;
-      font-size: 0.82rem;
+      color: rgba(240,230,255,0.25);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
       cursor: pointer;
-      padding: 4px 8px;
+      padding: 4px 10px;
       border-radius: 6px;
       transition: color 0.15s, background 0.15s;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
     }
-    .edit-toggle-btn:hover { color: #94a3b8; background: rgba(255,255,255,0.05); }
-    .edit-toggle-btn.active { color: #f5576c; }
+    .edit-toggle-btn:hover { color: #c9a0f5; background: rgba(201,160,245,0.06); }
+    .edit-toggle-btn.active { color: #c9a0f5; }
 
     .add-name-row {
       display: none;
@@ -153,99 +157,110 @@
     .add-name-row.visible { display: flex; }
 
     .add-name-input {
-      background: rgba(255,255,255,0.08);
-      border: 2px solid rgba(255,255,255,0.15);
-      border-radius: 12px;
-      padding: 10px 16px;
-      color: #fff;
-      font-size: 0.95rem;
-      font-weight: 600;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(201,160,245,0.18);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #f0e6ff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
       outline: none;
       width: 160px;
       transition: border-color 0.15s;
     }
-    .add-name-input::placeholder { color: #475569; }
-    .add-name-input:focus { border-color: rgba(255,255,255,0.35); }
+    .add-name-input::placeholder { color: rgba(240,230,255,0.22); }
+    .add-name-input:focus { border-color: rgba(201,160,245,0.5); }
 
     .add-btn {
-      background: linear-gradient(135deg, #43e97b, #38f9d7);
-      border: none;
-      border-radius: 12px;
+      background: rgba(201,160,245,0.12);
+      border: 1px solid rgba(201,160,245,0.25);
+      border-radius: 10px;
       padding: 10px 18px;
-      color: #0f172a;
-      font-size: 0.95rem;
-      font-weight: 800;
+      color: #c9a0f5;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: filter 0.15s, transform 0.15s;
+      transition: all 0.15s;
     }
-    .add-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .add-btn:hover { background: rgba(201,160,245,0.2); transform: translateY(-1px); }
 
     /* Spin Button */
     .spin-btn {
-      background: linear-gradient(135deg, #f093fb, #f5576c);
+      background: linear-gradient(135deg, #c9621e, #f4a261);
       border: none;
-      border-radius: 50px;
-      padding: 18px 52px;
+      border-radius: 10px;
+      padding: 14px 48px;
+      font-family: 'Fredoka One', cursive;
       font-size: 1.3rem;
-      font-weight: 800;
-      color: #fff;
+      font-weight: 400;
+      color: #1a0805;
       cursor: pointer;
-      letter-spacing: 1px;
-      box-shadow: 0 8px 30px rgba(245, 87, 108, 0.5);
-      transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+      letter-spacing: 0.5px;
+      box-shadow: 0 6px 24px rgba(201, 98, 30, 0.35);
+      transition: all 0.15s;
       margin-bottom: 40px;
     }
     .spin-btn:hover:not(:disabled) {
-      transform: translateY(-3px) scale(1.04);
-      box-shadow: 0 14px 40px rgba(245, 87, 108, 0.65);
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(201, 98, 30, 0.45);
     }
-    .spin-btn:active:not(:disabled) { transform: translateY(0) scale(0.98); }
-    .spin-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .spin-btn:active:not(:disabled) { transform: translateY(0); }
+    .spin-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
     /* Question Card */
-    .question-section { width: 100%; max-width: 560px; }
+    .question-section { width: 100%; max-width: 540px; }
 
     .question-card {
-      background: rgba(255,255,255,0.07);
-      border: 2px solid rgba(255,255,255,0.12);
-      border-radius: 24px;
-      padding: 36px 32px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,160,245,0.12);
+      border-radius: 16px;
+      padding: 32px 28px;
       text-align: center;
-      backdrop-filter: blur(10px);
-      transform-origin: top center;
-      animation: card-drop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
       display: none;
+      animation: fadeUp 0.3s ease forwards;
     }
     .question-card.visible { display: block; }
 
-    @keyframes card-drop {
-      from { opacity: 0; transform: translateY(-20px) scale(0.9); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .winner-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(240,230,255,0.35);
+      margin-bottom: 6px;
     }
 
     .winner-name {
-      font-size: 2rem;
-      font-weight: 900;
-      margin-bottom: 6px;
-      background: linear-gradient(90deg, var(--winner-c1, #f093fb), var(--winner-c2, #f5576c));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-family: 'Fredoka One', cursive;
+      font-size: 2.2rem;
+      font-weight: 400;
+      margin-bottom: 20px;
+      color: var(--winner-c1, #c9a0f5);
     }
 
     .question-label {
-      color: #64748b;
-      font-size: 0.85rem;
+      font-size: 0.72rem;
+      font-weight: 600;
       letter-spacing: 2px;
       text-transform: uppercase;
-      margin-bottom: 16px;
+      color: rgba(240,230,255,0.35);
+      margin-bottom: 10px;
     }
 
     .question-text {
-      font-size: 1.4rem;
-      font-weight: 600;
-      color: #e2e8f0;
-      line-height: 1.4;
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: #f0e6ff;
+      line-height: 1.5;
     }
 
     /* Confetti */
@@ -256,13 +271,11 @@
       overflow: hidden;
       z-index: 100;
     }
-
     .confetti-piece {
       position: absolute;
       border-radius: 2px;
       animation: confetti-fall linear forwards;
     }
-
     @keyframes confetti-fall {
       0%   { transform: translateY(-10px) rotate(0deg); opacity: 1; }
       100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
@@ -271,7 +284,7 @@
 </head>
 <body>
 
-  <h1>🎉 Ask Me Anything</h1>
+  <h1>🐱 Ask Me Anything</h1>
   <p class="subtitle">Press the button to pick someone &amp; ask them a question!</p>
 
   <div class="names-grid" id="namesGrid"></div>
@@ -288,6 +301,7 @@
 
   <div class="question-section">
     <div class="question-card" id="questionCard">
+      <div class="winner-label">Selected</div>
       <div class="winner-name" id="winnerName"></div>
       <div class="question-label">Your question is...</div>
       <div class="question-text" id="questionText"></div>
@@ -300,16 +314,16 @@
     const DEFAULT_NAMES = ['Leah', 'Justin', 'Chris', 'Greg', 'Darsh', 'Kunal'];
 
     const PALETTE = [
+      { c1: '#c9a0f5', c2: '#a78bfa' },
+      { c1: '#f4a261', c2: '#e76f51' },
+      { c1: '#6fcf97', c2: '#38f9d7' },
       { c1: '#f093fb', c2: '#f5576c' },
       { c1: '#4facfe', c2: '#00f2fe' },
-      { c1: '#43e97b', c2: '#38f9d7' },
       { c1: '#fda085', c2: '#f6d365' },
       { c1: '#a18cd1', c2: '#fbc2eb' },
       { c1: '#30cfd0', c2: '#667eea' },
-      { c1: '#f7971e', c2: '#ffd200' },
-      { c1: '#ee0979', c2: '#ff6a00' },
       { c1: '#56ab2f', c2: '#a8e063' },
-      { c1: '#8e2de2', c2: '#4a00e0' },
+      { c1: '#ee0979', c2: '#ff6a00' },
     ];
 
     const QUESTIONS = [
@@ -354,9 +368,7 @@
       try {
         const saved = localStorage.getItem('ama-names');
         return saved ? JSON.parse(saved) : [...DEFAULT_NAMES];
-      } catch {
-        return [...DEFAULT_NAMES];
-      }
+      } catch { return [...DEFAULT_NAMES]; }
     }
 
     function saveNames() {
@@ -370,8 +382,7 @@
     function buildGrid() {
       const grid = document.getElementById('namesGrid');
       grid.innerHTML = '';
-      if (editMode) grid.classList.add('editing');
-      else grid.classList.remove('editing');
+      editMode ? grid.classList.add('editing') : grid.classList.remove('editing');
 
       names.forEach((name, i) => {
         const color = getColor(i);
@@ -401,17 +412,13 @@
         document.getElementById('newNameInput').value = '';
         document.getElementById('questionCard').classList.remove('visible');
       }
-
       buildGrid();
     }
 
     function addName() {
       const input = document.getElementById('newNameInput');
       const name = input.value.trim();
-      if (!name || names.includes(name)) {
-        input.focus();
-        return;
-      }
+      if (!name || names.includes(name)) { input.focus(); return; }
       names.push(name);
       saveNames();
       buildGrid();
@@ -420,7 +427,7 @@
     }
 
     function removeName(name) {
-      if (names.length <= 2) return; // keep at least 2
+      if (names.length <= 2) return;
       names = names.filter(n => n !== name);
       saveNames();
       buildGrid();
@@ -446,19 +453,15 @@
       spinning = true;
 
       document.getElementById('questionCard').classList.remove('visible');
-
       const winner = names[Math.floor(Math.random() * names.length)];
       document.getElementById('spinBtn').disabled = true;
 
       const totalFrames = 38;
       let currentIdx = Math.floor(Math.random() * names.length);
-
       const delays = [];
       for (let i = 0; i < totalFrames; i++) {
         const t = i / totalFrames;
-        const speed = t < 0.5
-          ? 60 - t * 80
-          : 20 + (t - 0.5) * 320;
+        const speed = t < 0.5 ? 60 - t * 80 : 20 + (t - 0.5) * 320;
         delays.push(Math.max(18, Math.round(speed)));
       }
 
@@ -479,14 +482,13 @@
     }
 
     function showQuestion(winner) {
-      const winnerIndex = names.indexOf(winner);
-      const color = getColor(winnerIndex);
-      const qCard = document.getElementById('questionCard');
+      const color = getColor(names.indexOf(winner));
       const winnerNameEl = document.getElementById('winnerName');
+      const qCard = document.getElementById('questionCard');
 
       winnerNameEl.textContent = winner + '!';
       winnerNameEl.style.setProperty('--winner-c1', color.c1);
-      winnerNameEl.style.setProperty('--winner-c2', color.c2);
+      winnerNameEl.style.color = color.c1;
       document.getElementById('questionText').textContent = getRandomQuestion();
 
       qCard.classList.remove('visible');
@@ -501,15 +503,15 @@
     function launchConfetti(c1, c2) {
       const container = document.getElementById('confettiContainer');
       container.innerHTML = '';
-      const colors = [c1, c2, '#ffffff', '#ffd700', '#ff6b9d'];
-      for (let i = 0; i < 60; i++) {
+      const colors = [c1, c2, '#f0e6ff', '#f4a261', '#c9a0f5'];
+      for (let i = 0; i < 55; i++) {
         const piece = document.createElement('div');
         piece.className = 'confetti-piece';
         piece.style.left = Math.random() * 100 + 'vw';
         piece.style.top = '-10px';
         piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-        piece.style.width = (6 + Math.random() * 8) + 'px';
-        piece.style.height = (6 + Math.random() * 8) + 'px';
+        piece.style.width = (6 + Math.random() * 7) + 'px';
+        piece.style.height = (6 + Math.random() * 7) + 'px';
         piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
         piece.style.animationDuration = (1.5 + Math.random() * 2) + 's';
         piece.style.animationDelay = (Math.random() * 0.5) + 's';
@@ -518,7 +520,6 @@
       setTimeout(() => container.innerHTML = '', 4000);
     }
 
-    // Enter to add name
     document.getElementById('newNameInput').addEventListener('keydown', e => {
       if (e.key === 'Enter') addName();
     });
